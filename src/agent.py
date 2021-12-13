@@ -5,6 +5,9 @@ from src.constants import *
 import math
 
 
+total_farmed = 0
+
+
 def cook_ingredient(total: int, batch_count: int=200):
     message = 'Cooking ingredients. Total: {} - Batch count: {}'.format(total, batch_count)
     log(message)
@@ -30,19 +33,18 @@ def process_crops(total: int, batch_count: int=200):
 
 
 def farm_fields(total: int, batch_count: int=45):
-    total_farmed = 0
     batches = math.floor(total / batch_count)
     leftover = total % batch_count
 
     for _ in range(batches):
-        farm_batch(batch_count, total_farmed)
-    farm_batch(leftover, total_farmed)
+        farm_batch(batch_count)
+    farm_batch(leftover)
 
 
-def farm_batch(batch_count: int, total_farmed: int):
+def farm_batch(batch_count: int):
     for i in range(1, batch_count + 1):
         click_make_button()
-        log('Planting crop: {}'.format(i))
+        log('Planting crop in batch: ({} / {})'.format(i, batch_count))
 
         switch_apps()
 
@@ -58,7 +60,7 @@ def farm_batch(batch_count: int, total_farmed: int):
         random_delay(delay)
             
         use_selection(False)
-        log('Harvesting crop: {}'.format(i))
+        log('Harvesting crop in batch: ({} / {})'.format(i, batch_count))
 
         switch_apps()
         
@@ -67,9 +69,10 @@ def farm_batch(batch_count: int, total_farmed: int):
         random_delay(delay)
 
         switch_apps()
-        
+
+        global total_farmed
         total_farmed += 1
-        log('Total crops farmed ~ {}'.format(total_farmed))
+        log('Total crops farmed: ~ {}'.format(total_farmed))
     
     select_nearest_npc()
     use_selection()

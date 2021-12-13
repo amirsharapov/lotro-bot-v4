@@ -8,7 +8,7 @@ def setup():
 
 def run():
     switch_apps()
-    farm_fields(3841, 50)
+    farm_fields(3820, 50)
 
 
 if __name__ == '__main__':
