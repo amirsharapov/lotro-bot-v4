@@ -33,6 +33,9 @@ def process_crops(total: int, batch_count: int=200):
 
 
 def farm_fields(total: int, batch_count: int=45):
+    message = 'Farming fields. Total: {} - Batch count: {}'.format(total, batch_count)
+    log(message)
+    
     batches = math.floor(total / batch_count)
     leftover = total % batch_count
 
