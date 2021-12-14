@@ -30,7 +30,7 @@ if __name__ == '__main__':
             batch_count = value
     if batch_count is None:
         print('No \'batch_count\' argument passed. Defaulting to 50')
-        batch_count = 50
+        batch_count = 200
     
     if count is None:
         raise Exception('You must specify a \'count\' arg (ie: \'python main.py --count=4000\').')

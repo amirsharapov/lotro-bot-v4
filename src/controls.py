@@ -86,11 +86,11 @@ def keyDown(key, delay: bool = True):
 def hotkey(keys: list[str], delay: bool = True):
     for key in keys:
         keyDown(key)
-        sleep(.1)
+        sleep(.05)
 
     for key in reversed(keys):
         keyUp(key)
-        sleep(.1)
+        sleep(.05)
 
     if delay:
         random_delay()
