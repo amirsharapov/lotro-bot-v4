@@ -1,6 +1,4 @@
-from datetime import datetime
 from time import gmtime, sleep, time, strftime
-from typing import Any
 from src.logging import log
 from src.controls import *
 from src.constants import *
@@ -21,57 +19,57 @@ total_to_process = None
 """Non-VIP Agent"""
 
 
-def cook_ingredient(total: int, batch_count: int = 200):
+def cook_ingredient(total: int, batch_size: int):
     message = 'Cooking ingredients. Total: {} - Batch count: {}'.format(
-        total, batch_count)
+        total, batch_size)
     log(message)
 
-    batches = math.floor(total / batch_count)
-    leftover = total % batch_count
+    batches = math.floor(total / batch_size)
+    leftover = total % batch_size
 
     for _ in range(batches):
-        make_batch_all(batch_count, COOKING_INGREDIENT_INDUCTION)
+        make_batch_all(batch_size, COOKING_INGREDIENT_INDUCTION)
     make_batch_all(leftover, COOKING_INGREDIENT_INDUCTION)
 
 
-def process_crops(total: int, batch_count: int = 200):
+def process_crops(total: int, batch_size: int):
     message = 'Processing crops. Total: {} - Batch count: {}'.format(
-        total, batch_count)
+        total, batch_size)
     log(message)
 
-    batches = math.floor(total / batch_count)
-    leftover = total % batch_count
+    batches = math.floor(total / batch_size)
+    leftover = total % batch_size
 
     for _ in range(batches):
-        make_batch_all(batch_count, COOKING_INGREDIENT_INDUCTION)
+        make_batch_all(batch_size, COOKING_INGREDIENT_INDUCTION)
     make_batch_all(leftover, COOKING_INGREDIENT_INDUCTION)
 
 
-def farm_fields(total: int, batch_count: int = 45):
+def farm_fields(total: int, batch_size: int):
     global total_to_farm, time_started
     total_to_farm = total
     time_started = time()
 
     message = 'Farming fields. Total: {} - Batch count: {}'.format(
-        total, batch_count)
+        total, batch_size)
     log(message)
 
-    batches = math.floor(total / batch_count)
-    leftover = total % batch_count
+    batches = math.floor(total / batch_size)
+    leftover = total % batch_size
 
     for _ in range(batches):
-        farm_batch(batch_count)
+        farm_batch(batch_size)
     farm_batch(leftover)
 
 
-def farm_batch(batch_count: int):
+def farm_batch(batch_size: int):
     global total_farmed
     global total_to_farm
     global time_started
 
-    for i in range(1, batch_count + 1):
+    for i in range(1, batch_size + 1):
         click_make_button()
-        log('Planting crop in batch: ({} / {})'.format(i, batch_count))
+        log('Planting crop in batch: ({} / {})'.format(i, batch_size))
 
         switch_apps()
 
@@ -87,7 +85,7 @@ def farm_batch(batch_count: int):
         random_delay(delay)
 
         use_selection(False)
-        log('Harvesting crop in batch: ({} / {})'.format(i, batch_count))
+        log('Harvesting crop in batch: ({} / {})'.format(i, batch_size))
 
         switch_apps()
 
@@ -122,10 +120,10 @@ def farm_batch(batch_count: int):
     move_backward(delay)
 
 
-def make_batch_all(batch_count: int, induction: int):
+def make_batch_all(batch_size: int, induction: int):
     click_make_all_button()
     switch_apps()
-    for i in range(1, batch_count + 1):
+    for i in range(1, batch_size + 1):
         sleep(induction)
         log('Another one: {}'.format(i))
     switch_apps()
@@ -133,8 +131,8 @@ def make_batch_all(batch_count: int, induction: int):
     click_repair_all_button()
 
 
-def make_batch_one(batch_count: int, induction: int):
-    for i in range(1, batch_count + 1):
+def make_batch_one(batch_size: int, induction: int):
+    for i in range(1, batch_size + 1):
         click_make_button()
         sleep(induction)
         log('Another one: {}'.format(i))
@@ -143,33 +141,31 @@ def make_batch_one(batch_count: int, induction: int):
 """VIP Agent"""
 
 
-def vip_cook_ingredient(total: int):
-    batch_size: int = 999
-    batch_count: int = math.floor(total / batch_size)
+def vip_cook_ingredient(total: int, batch_size: int):
+    batch_size: int = math.floor(total / batch_size)
     leftovers: int = total % batch_size
 
     log("Stared cooking: Batch size = {} - Batch count = {} - Leftovers = {}".format(
-        batch_size, batch_count, leftovers))
+        batch_size, batch_size, leftovers))
 
-    for i in range(1, batch_count + 1):
+    for i in range(1, batch_size + 1):
         vip_make_batch(batch_size, i)
     vip_make_batch(batch_size, 'Leftovers')
 
 
-def vip_process_crops(total: int):
-    batch_size: int = 999
-    batch_count: int = math.floor(total / batch_size)
+def vip_process_crops(total: int, batch_size: int):
+    batch_size: int = math.floor(total / batch_size)
     leftovers: int = total % batch_size
 
     log("Stared processing: Batch size = {} - Batch count = {} - Leftovers = {}".format(
-        batch_size, batch_count, leftovers))
+        batch_size, batch_size, leftovers))
 
-    for i in range(1, batch_count + 1):
+    for i in range(1, batch_size + 1):
         vip_make_batch(batch_size, i)
     vip_make_batch(batch_size, 'Leftovers')
 
 
-def vip_make_batch(size: int, batch: Any = 'N/A'):
+def vip_make_batch(size: int, batch: int):
 
     click_make_all_button()
     minimize_lotro()
@@ -182,7 +178,7 @@ def vip_make_batch(size: int, batch: Any = 'N/A'):
     maximize_lotro()
 
 
-def vip_farm(total: int, batch_size=5):
+def vip_farm_fields(total: int, batch_size: int):
     log('VIP Farming started: Total: {} - Batch Size = {}'.format(total, batch_size))
     batches = math.floor(total / batch_size)
     leftover_batch_size = total % batch_size
