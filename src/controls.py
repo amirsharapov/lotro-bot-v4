@@ -1,3 +1,4 @@
+import math
 from random import Random
 from time import sleep
 from src.logging import log
@@ -14,13 +15,16 @@ random = Random()
 """
 
 
-def random_coords(rect: tuple[int], padding: int = 5) -> tuple[int]:
+def random_coords(rect: tuple[int], padding: int = None) -> tuple[int]:
     x, y, w, h = rect
 
-    x_lower = x + padding
-    x_upper = x - padding + w
-    y_lower = y + padding
-    y_upper = y - padding + h
+    padding_x = math.ceil(w / 10) if padding is None else padding
+    padding_y = math.ceil(h / 10) if padding is None else padding
+
+    x_lower = x + padding_x
+    x_upper = x - padding_x + w
+    y_lower = y + padding_y
+    y_upper = y - padding_y + h
 
     rx = random.randint(x_lower, x_upper)
     ry = random.randint(y_lower, y_upper)
@@ -39,6 +43,7 @@ def random_time(target_ms: int = 300, margin_ms: int = 250) -> float:
 
 def random_delay(delay: float = None) -> float:
     delay = random_time() if not delay else delay
+    log('Sleeping {} seconds'.format(delay))
     sleep(delay)
     return delay
 
@@ -85,12 +90,12 @@ def keyDown(key, delay: bool = True):
 
 def hotkey(keys: list[str], delay: bool = True):
     for key in keys:
-        keyDown(key)
-        sleep(.05)
+        keyDown(key, False)
+        random_delay(random_time(20, 8))
 
     for key in reversed(keys):
-        keyUp(key)
-        sleep(.05)
+        keyUp(key, False)
+        random_delay(random_time(20, 8))
 
     if delay:
         random_delay()
@@ -101,18 +106,20 @@ def hotkey(keys: list[str], delay: bool = True):
 
 
 def get_lotro_hwnd():
-    hwnd = win32gui.FindWindow(None, LOTRO_WINDOW_NAME)
-    print(hwnd)
+    return win32gui.FindWindow(None, LOTRO_WINDOW_NAME)
 
 
 def minimize_lotro():
     hwnd = get_lotro_hwnd()
     win32gui.ShowWindow(hwnd, win32con.SW_FORCEMINIMIZE)
+    random_delay()
 
 
 def maximize_lotro():
     hwnd = get_lotro_hwnd()
+    win32gui.SetForegroundWindow(hwnd)
     win32gui.ShowWindow(hwnd, win32con.SW_SHOWMAXIMIZED)
+    random_delay()
 
 
 """Character controls
@@ -202,6 +209,11 @@ def click_repair_tab(delay: bool = True):
 def click_repair_all_button(delay: bool = True):
     log('Clicking repair all button')
     click_rect(REPAIR_ALL_BUTTON, delay)
+
+
+def click_quantity_increment_arrow(delay: bool = True):
+    log('Clicking quantity increment arrow')
+    click_rect(QUANTITY_INCREMENT_ARROW, delay)
 
 
 """Util controls
