@@ -1,5 +1,7 @@
 import sys
 from sys import argv
+
+import pyautogui
 from src.logging import log
 from src.controls import maximize_lotro, minimize_lotro
 
@@ -8,7 +10,33 @@ from tests.tests import run_tests
 
 
 def setup():
-    run_tests()
+    profile = input('What profile would you like to use? 1 or 2')
+    profile_data = None
+
+    if profile == '1':
+        with open('src/profiles/1.py', 'r') as f:
+            profile_data = f.read()
+    if profile == '2':
+        with open('src/profiles/2.py', 'r') as f:
+            profile_data = f.read()
+    
+    with open('src/constants.py', 'w') as f:
+        f.write(profile_data)
+
+
+def register_coordinates():
+    rect_name = input('What rectangle are these coordinates for?\n').upper()
+    input('Position your mouse at the TOP LEFT of the rectangle. Press \'ENTER\' to continue...\n')
+    x1, y1 = pyautogui.position()
+    input('Position your mouse at the BOTTOM LEFT of the rectangle. Press \'ENTER\' to continue...\n')
+    x2, y2 = pyautogui.position()
+
+    x = x1
+    y = y1
+    w = x2 - x1
+    h = y2 - y1
+
+    print('{} = ({}, {}, {}, {})'.format(rect_name, x, y, w, h))
 
 
 def try_find_action_arg(args: list[str]):
@@ -77,6 +105,19 @@ def process(vip: bool, total: int, batch_size: int = None):
 
 def main():
     log('Running command: python {}'.format(' '.join(argv)))
+
+    if '--setup' in argv:
+        setup()
+        sys.exit(0)
+    
+    if '--test' in argv:
+        run_tests()
+        sys.exit(0)
+    
+    if '--register' in argv:
+        register_coordinates()
+        sys.exit(0)
+
     args = argv[1:]
 
     action = None
