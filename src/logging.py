@@ -63,4 +63,4 @@ def build_log_file():
         os.mkdir(DEFAULT_LOG_DIRECTORY)
     
     file_name = today()
-    return 'logs/{}.log'.format(file_name)
+    return '{}/{}.log'.format(DEFAULT_LOG_DIRECTORY, file_name)

@@ -104,7 +104,7 @@ def process(vip: bool, total: int, batch_size: int = None):
 
 
 def main():
-    log('Running command: python {}'.format(' '.join(argv)))
+    print('Running command: python {}'.format(' '.join(argv)))
 
     if '--setup' in argv:
         setup()

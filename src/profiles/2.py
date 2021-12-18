@@ -2,8 +2,8 @@
 REPAIR_TAB = (1805, 70, 80, 10)
 
 """Buttons"""
-MAKE_BUTTON = (645, 525, 65, 15)
-MAKE_ALL_BUTTON = (720, 530, 60, 10)
+MAKE_BUTTON = (646, 525, 64, 14)
+MAKE_ALL_BUTTON = (722, 526, 62, 12)
 REPAIR_ALL_BUTTON = (1750, 450, 60, 10)
 
 """Other Controls"""
@@ -45,7 +45,7 @@ TIMESTAMP_FORMAT = r'%H_%M_%S_%f'
 
 """Logging"""
 DEFAULT_LOG_LEVEL = 'INFO'
-DEFAULT_LOG_DIRECTORY = 'C:/Users/Amir Sharapov/Code/game-bots/lotro-bot/logs'
+DEFAULT_LOG_DIRECTORY = 'C:/lotro-bot-logs'
 
 """System"""
 LOTRO_WINDOW_NAME = 'The Lord of the Rings Online™'
