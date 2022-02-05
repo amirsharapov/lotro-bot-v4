@@ -142,15 +142,15 @@ def make_batch_one(batch_size: int, induction: int):
 
 
 def vip_cook_ingredient(total: int, batch_size: int):
-    batch_size: int = math.floor(total / batch_size)
+    batches: int = math.floor(total / batch_size)
     leftovers: int = total % batch_size
 
     log("Stared cooking: Batch size = {} - Batch count = {} - Leftovers = {}".format(
-        batch_size, batch_size, leftovers))
+        batch_size, batches, leftovers))
 
-    for i in range(1, batch_size + 1):
+    for i in range(1, batches + 1):
         vip_make_batch(batch_size, i)
-    vip_make_batch(batch_size, 'Leftovers')
+    vip_make_batch(leftovers, 'Leftovers')
 
 
 def vip_process_crops(total: int, batch_size: int):
@@ -162,7 +162,7 @@ def vip_process_crops(total: int, batch_size: int):
 
     for i in range(1, batches + 1):
         vip_make_batch(batch_size, i)
-    vip_make_batch(batch_size, 'Leftovers')
+    vip_make_batch(leftovers, 'Leftovers')
 
 
 def vip_make_batch(size: int, batch: int):
@@ -199,9 +199,8 @@ def vip_farm_batch(batch: int, batch_size: int):
 
     t = random_time(batch_size * 1100, 250)
     click_make_button()
-
-    log('Planting batch: {}'.format(batch))
     
+    log('Planting batch: {}'.format(batch))
     minimize_lotro()
 
     random_delay(t)
@@ -216,6 +215,7 @@ def vip_farm_batch(batch: int, batch_size: int):
 
     minimize_lotro()
 
-    random_delay(random_time(batch_size * 2250))
+    random_delay(random_time(batch_size * 1250))
+
 
     maximize_lotro()

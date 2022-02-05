@@ -62,6 +62,7 @@ def click_rect(rect, delay: bool = True):
 def click_coords(x, y, duration, delay: bool = True):
     pyautogui.moveTo(x, y, duration)
     pydirectinput.click()
+    log('Clicked coordinates: ({}, {})'.format(x, y))
     if delay:
         random_delay()
 
@@ -110,15 +111,21 @@ def get_lotro_hwnd():
 
 
 def minimize_lotro():
-    hwnd = get_lotro_hwnd()
-    win32gui.ShowWindow(hwnd, win32con.SW_FORCEMINIMIZE)
+    try:
+        hwnd = get_lotro_hwnd()
+        win32gui.ShowWindow(hwnd, win32con.SW_FORCEMINIMIZE)
+    except:
+        switch_apps()
     random_delay()
 
 
 def maximize_lotro():
-    hwnd = get_lotro_hwnd()
-    win32gui.SetForegroundWindow(hwnd)
-    win32gui.ShowWindow(hwnd, win32con.SW_SHOWMAXIMIZED)
+    try:
+        hwnd = get_lotro_hwnd()
+        win32gui.SetForegroundWindow(hwnd)
+        win32gui.ShowWindow(hwnd, win32con.SW_SHOWMAXIMIZED)
+    except:
+        switch_apps()
     random_delay()
 
 
